@@ -3,8 +3,9 @@ _NOTE: These changes were made with the help of AI_
 ## vcontrold Tester v1.0.0
 
 A comprehensive Python testing tool for vcontrold daemon that discovers and tests heating system commands with live monitoring capabilities.
-![CLI](vcontrold_tester_cli.png)
+![CLI](vcontrold_tester_cli.png) ![HTML](vcontrold_tester_html.png)
 <img src="vcontrold_tester_cli.png" alt="CLI" width="49.5%">
+<img src="vcontrold_tester_html.png" alt="HTML" width="49.5%">
 ### Features
 
 **Command Discovery**
