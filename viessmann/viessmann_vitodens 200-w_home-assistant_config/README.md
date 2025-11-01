@@ -4,15 +4,15 @@ _NOTE: Description & configuration were made with the help of AI_
 
 This Lovelace card configuration provides an interactive visualization and control interface for Viessmann Vitodens 200-W heating curve parameters.
 
-<p align="center">
+<div align="center">
     <h1>Heating Circuit 2</h1>
     <img src="heating_curve_hk2.png" alt="Heating Curve HK2" width="75%">
-</p>
+</div>
 
-<p align="center">
+<div align="center">
     <h1>Heating Circuit 3</h1>
     <img src="heating_curve_hk3.png" alt="Heating Curve HK3" width="75%">
-</p>
+</div>
 
 ## Overview
 
