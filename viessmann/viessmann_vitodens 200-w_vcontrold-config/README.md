@@ -6,7 +6,7 @@ Program-specific settings (device connection, network port, units, protocols) fo
 Command and device definitions (read/write commands, memory addresses, data types) for [vcontrold](https://github.com/openv/openv/wiki/vcontrold)
 
 ## vcontrold.yaml
-configuration file for [vcontrold Home Assistant Plugin](https://github.com/Alexandre-io/homeassistant-vcontrol)
+configuration file for [Vcontrol Home Assistant add-on](https://github.com/Alexandre-io/homeassistant-vcontrol)
 
 ### Notes:
 1. My configuration does not include a room temperature sensor. These sensors are therefore commented out.
