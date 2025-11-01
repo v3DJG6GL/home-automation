@@ -1,4 +1,4 @@
-_NOTE: These changes were made with the help of AI_
+_NOTE: tool & description were made with the help of AI_
 
 ## vcontrold Tester v1.0.0
 
