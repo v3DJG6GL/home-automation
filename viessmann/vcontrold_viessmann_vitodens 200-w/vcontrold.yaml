@@ -1,0 +1,173 @@
+tty: /dev/ttyUSB0
+refresh: 60
+device_id: 20CB
+mqtt_topic: openv
+debug: false
+commands:
+# ==========================================
+# ALLGEMEIN
+# ==========================================
+  - getVitoAnlagenschema:STRING
+  - getVitoTempAussen:FLOAT
+  - getVitoSystemzeit:STRING
+# ==========================================
+# INFO: DEAKTIVIERT - Keine Raumtemperatursensoren vorhanden!!!
+# ==========================================
+  # - getVitoTempRaum:FLOAT
+  # - getVitoTempRaumHK2:FLOAT
+  # - getVitoTempRaumHK3:FLOAT
+
+# ==========================================
+#               KESSEL/BRENNER
+# ==========================================
+
+  - getVitoTempKesselIst:FLOAT
+  - getVitoTempKesselSoll:FLOAT
+  - getVitoTempKesselAbgasIst:FLOAT
+  - getVitoStatusBrenner:STRING
+  - getVitoLaufzeitBrenner:FLOAT
+  - getVitoStartsBrenner:FLOAT
+  - getVitoStatusPumpeIntern:STRING
+  - getVitoDrehzahlPumpeIntern:FLOAT
+
+# ==========================================
+#               WARMWASSER
+# ==========================================
+  - getVitoTempWWIst:FLOAT
+  - getVitoTempWWSoll:FLOAT
+  - getVitoStatusWWSpeicherLadePumpe:STRING
+  - getVitoStatusWWZirkuPumpe:STRING
+  - getVitoStatusUmschaltventil:STRING
+  - getVitoBrennerStufe1Status:STRING
+
+# ==========================================
+# HK1 (Heizkreislauf 1): NICHT IN BETRIEB
+# ==========================================
+# INFO: DEAKTIVIERT - HK1 nicht vorhanden!!!
+# ==========================================
+  # - getVitoAktBetriebsartHK1:STRING
+  # - getVitoTempVorlaufSollHK1:FLOAT
+  # - getVitoStatusPumpeHK1:STRING
+  # - getVitoBetriebsartHK1:STRING
+  # - getVitoBetriebReduziertHK1:STRING
+  # - getVitoBetriebPartyHK1:STRING
+  # - getVitoTempRaumNorSollHK1:FLOAT
+  # - getVitoTempRaumReduziertSollHK1:FLOAT
+  # - getVitoTempPartySollHK1:FLOAT
+  # - getVitoFerienBeginnHK1:FLOAT
+  # - getVitoFerienEndeHK1:FLOAT
+  # - getVitoStatusPumpeHK1:STRING
+  # - getVitoKennlinieNeigungHK1:FLOAT
+  # - getVitoKennlinieNiveauHK1:FLOAT
+
+# ==========================================
+# HK2 (Heizkreislauf 2): RADIATOREN
+# ==========================================
+  - getVitoAktBetriebsartHK2:STRING
+  - getVitoTempVorlaufSollHK2:FLOAT
+  - getVitoStatusPumpeHK2:STRING
+  - getVitoTempVorlaufIstHK2:FLOAT
+  - getVitoBetriebsartHK2:STRING
+  - getVitoBetriebReduziertHK2:STRING
+  - getVitoBetriebPartyHK2:STRING
+  - getVitoTempRaumNorSollHK2:FLOAT
+  - getVitoTempRaumReduziertSollHK2:FLOAT
+  - getVitoTempPartySollHK2:FLOAT
+  - getVitoFerienBeginnHK2:FLOAT
+  - getVitoFerienEndeHK2:FLOAT
+  - getVitoStatusPumpeHK2:STRING
+  - getVitoKennlinieNeigungHK2:FLOAT
+  - getVitoKennlinieNiveauHK2:FLOAT
+
+# ==========================================
+# HK3 (Heizkreislauf 3): BODENHEIZUNG
+# ==========================================
+  - getVitoAktBetriebsartHK3:STRING
+  - getVitoTempVorlaufSollHK3:FLOAT
+  - getVitoStatusPumpeHK3:STRING
+  - getVitoTempVorlaufIstHK3:FLOAT
+  - getVitoBetriebsartHK3:STRING
+  - getVitoBetriebReduziertHK3:STRING
+  - getVitoBetriebPartyHK3:STRING
+  - getVitoTempRaumNorSollHK3:FLOAT
+  - getVitoTempRaumReduziertSollHK3:FLOAT
+  - getVitoTempPartySollHK3:FLOAT
+  - getVitoFerienBeginnHK3:FLOAT
+  - getVitoFerienEndeHK3:FLOAT
+  - getVitoStatusPumpeHK3:STRING
+  - getVitoKennlinieNeigungHK3:FLOAT
+  - getVitoKennlinieNiveauHK3:FLOAT
+# ==========================================
+#  STÖRUNGEN
+# ==========================================
+  - getVitoStatusStoerung:STRING
+  - getVitoStoerung1:STRING
+  - getVitoStoerung2:STRING
+  - getVitoStoerung3:STRING
+  - getVitoStoerung4:STRING
+  - getVitoStoerung5:STRING
+  - getVitoStoerung6:STRING
+  - getVitoStoerung7:STRING
+  - getVitoStoerung8:STRING
+  - getVitoStoerung9:STRING
+  - getVitoStoerung10:STRING
+
+# ==========================================
+# ==========================================
+#				TIMERS
+# ==========================================
+# ==========================================
+
+# ==========================================
+#		 	TIMER WARMWASSER
+# ==========================================
+  - getVitoTimerMoWW:FLOAT
+  - getVitoTimerDiWW:FLOAT
+  - getVitoTimerMiWW:FLOAT
+  - getVitoTimerDoWW:FLOAT
+  - getVitoTimerFrWW:FLOAT
+  - getVitoTimerSaWW:FLOAT
+  - getVitoTimerSoWW:FLOAT
+# ==========================================
+#  	 ZIKRULATIONSZEITEN WARMWASSER
+# ==========================================
+  - getVitoTimerMoWWPumpeZirku:FLOAT
+  - getVitoTimerDiWWPumpeZirku:FLOAT
+  - getVitoTimerMiWWPumpeZirku:FLOAT
+  - getVitoTimerDoWWPumpeZirku:FLOAT
+  - getVitoTimerFrWWPumpeZirku:FLOAT
+  - getVitoTimerSaWWPumpeZirku:FLOAT
+  - getVitoTimerSoWWPumpeZirku:FLOAT
+# ==========================================
+#		 		TIMER HK1
+# ==========================================
+# ==========================================
+# INFO: DEAKTIVIERT - HK1 nicht vorhanden!!!
+# ==========================================
+  # - getVitoTimerMoHeizenHK1:FLOAT
+  # - getVitoTimerDiHeizenHK1:FLOAT
+  # - getVitoTimerMiHeizenHK1:FLOAT
+  # - getVitoTimerDoHeizenHK1:FLOAT
+  # - getVitoTimerFrHeizenHK1:FLOAT
+  # - getVitoTimerSaHeizenHK1:FLOAT
+  # - getVitoTimerSoHeizenHK1:FLOAT
+# ==========================================
+#		 		TIMER HK2
+# ==========================================
+  - getVitoTimerMoHeizenHK2:FLOAT
+  - getVitoTimerDiHeizenHK2:FLOAT
+  - getVitoTimerMiHeizenHK2:FLOAT
+  - getVitoTimerDoHeizenHK2:FLOAT
+  - getVitoTimerFrHeizenHK2:FLOAT
+  - getVitoTimerSaHeizenHK2:FLOAT
+  - getVitoTimerSoHeizenHK2:FLOAT
+# ==========================================
+#		 		TIMER HK3
+# ==========================================
+  - getVitoTimerMoHeizenHK3:FLOAT
+  - getVitoTimerDiHeizenHK3:FLOAT
+  - getVitoTimerMiHeizenHK3:FLOAT
+  - getVitoTimerDoHeizenHK3:FLOAT
+  - getVitoTimerFrHeizenHK3:FLOAT
+  - getVitoTimerSaHeizenHK3:FLOAT
+  - getVitoTimerSoHeizenHK3:FLOAT
