@@ -35,10 +35,16 @@ The configuration uses a vertical stack containing:
 
 The card requires these Home Assistant entities to be configured. _The names may vary depending on your configuration_:
 
-    select.mqtt_hk2_neigung_heizkennlinie        # Heating curve slope selector (0.2 - 3.5)
-    select.mqtt_hk2_niveau_heizkennlinie         # Heating curve level selector (integer offset)
-    sensor.mqtt_aussentemperatur                 # Outdoor temperature sensor
-    sensor.hk2_radiatoren_hk2_voralauftemperatur # Radiator flow temperature sensor
+    sensor.mqtt_aussentemperatur                   # Outdoor temperature sensor
+    # Heating Circuit 2
+    select.mqtt_hk2_neigung_heizkennlinie          # Heating curve slope selector (0.2 - 3.5)
+    select.mqtt_hk2_niveau_heizkennlinie           # Heating curve level selector (integer offset)
+    sensor.hk2_radiatoren_hk2_voralauftemperatur   # Radiator flow temperature sensor
+    # Heating Circuit 3
+    select.mqtt_hk3_neigung_heizkennlinie          # Heating curve slope selector (0.2 - 3.5)
+    select.mqtt_hk3_niveau_heizkennlinie           # Heating curve level selector (integer offset)
+    sensor.hk3_bodenheizung_hk3_voralauftemperatur # Radiator flow temperature sensor
+
 
 ## Required Custom Cards
 
