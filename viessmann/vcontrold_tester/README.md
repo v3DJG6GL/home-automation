@@ -6,7 +6,7 @@ A comprehensive Python testing tool for vcontrold daemon that discovers and test
 
 
 <p align="center" width="100%">
-    <img src="vcontrold_tester_html.png" alt="HTML" width="49.5%">
+    <img src="vcontrold_tester_html.png" alt="HTML" width="49.5%"></br>
     <img src="vcontrold_tester_cli.png" alt="CLI" width="49.5%">
 </p>
 ### Features
