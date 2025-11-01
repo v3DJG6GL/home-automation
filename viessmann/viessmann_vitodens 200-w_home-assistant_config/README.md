@@ -18,19 +18,6 @@ The card displays a dynamic heating curve graph that shows the relationship betw
 - These configurations are designed for heating circuit 2 (HK2) (Radiatoren) & heating circuit 3 (HK3) (Bodenheizung) and not for heating circuit 1 (HK1) since my configuration does not include HK1.
 - Always check your own configuration and adapt entity names accordingly to ensure compatibility.
 
-## Card Structure
-
-The configuration uses a vertical stack containing:
-
-1. **Title Section**: Mushroom-style title card identifying the heating circuit
-2. **Control Section**: Protected by a restriction card requiring 30-second confirmation
-   - Slope adjustment (Neigung): Controls the steepness of the heating curve
-   - Level adjustment (Niveau): Shifts the entire curve up or down
-3. **Status Section**: Current readings display
-   - Outdoor temperature sensor
-   - Actual flow temperature sensor
-4. **Visualization Section**: Interactive Plotly graph with heating curve
-
 ## Required Entities
 
 The card requires these Home Assistant entities to be configured. _The names may vary depending on your configuration_:
@@ -55,6 +42,7 @@ Install these custom cards via HACS:
 - **restriction-card**: Adds confirmation dialogs to prevent accidental changes
 - **layout-card**: Grid layout support
 - **plotly-graph**: Advanced graph visualization
+- **card-mod**: Advanced CSS styling
 
 ## Installation
 
@@ -69,30 +57,21 @@ Install these custom cards via HACS:
 
 The card includes a comprehensive heating curve lookup table with 30 slope values (0.2 to 3.5) and 6 outdoor temperature points (-30°C to +20°C). The calculation uses linear interpolation between known slope values to provide smooth curve adjustments.
 
-### Dynamic Annotations
-
-- Temperature values are displayed at key points along the curve
-- Annotations automatically reposition to avoid overlap at chart edges
-- High temperature values (>85°C) show annotations below the point
-- Responsive design shows fewer annotations on narrow screens
-
 ### Current Position Indicator
 
 A white marker with blue border shows the current operating point based on actual outdoor and flow temperatures, with a detailed annotation box showing:
 
 - Current flow temperature
 - Current outdoor temperature
-- Dynamic positioning (top-right or bottom-left based on curve parameters)
 
 ### Interactive Elements
 
 - **Button Mode Controls**: Slope and level can be adjusted using increment/decrement buttons
-- **Tap Actions**: Tap any control for more detailed information
 - **Confirmation Protection**: 30-second window after activating change mode prevents accidental adjustments
 
 ### Graph Specifications
 
-- X-axis: Outdoor temperature from +20°C to -30°C (reversed)
+- X-axis: Outdoor temperature from +20°C to -30°C
 - Y-axis: Flow temperature from 0°C to 102°C
 - Grid spacing: 10°C increments on both axes
 - Smooth spline interpolation for curve rendering
@@ -154,13 +133,10 @@ The card detects screen width and adjusts annotation density:
 
 ## Troubleshooting
 
-**Graph not displaying**: Verify that custom:plotly-graph card is installed
-
-**Entity unavailable errors**: Check that all sensor and select entities exist and are properly named
-
-**Annotations overlapping**: This is handled automatically, but can be adjusted by modifying the `ax` and `ay` offset values in the annotations function
-
-**Changes not applying**: Ensure restriction-card confirmation is activated by clicking the control area first
+- **Graph not displaying**: Verify that custom:plotly-graph card is installed
+- **Entity unavailable errors**: Check that all sensor and select entities exist and are properly named
+- **Annotations overlapping**: This is handled automatically, but can be adjusted by modifying the `ax` and `ay` offset values in the annotations function
+- **Changes not applying**: Ensure restriction-card confirmation is activated by clicking the control area first
 
 ## Technical Notes
 
@@ -168,4 +144,3 @@ The card detects screen width and adjusts annotation density:
 - All computations run client-side in the browser
 - Graph updates automatically when entity states change
 - Refresh interval: 5 seconds for real-time updates
-- Hours to show: 1 (required parameter, though data is not historical)

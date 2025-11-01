@@ -1,0 +1,479 @@
+type: custom:vertical-stack-in-card
+cards:
+  - type: custom:mushroom-title-card
+    title: "Heating Curve HK2: Radiatoren"
+  - type: custom:restriction-card
+    restrictions:
+      confirm:
+        text: Änderungsmodus aktivieren?
+    duration: 30
+    card:
+      type: vertical-stack
+      cards:
+        - type: custom:layout-card
+          layout_type: grid
+          layout:
+            grid-template-columns: repeat(2, minmax(120px, 1fr))
+            grid-gap: 0px
+          cards:
+            - type: custom:mushroom-number-card
+              entity: select.mqtt_hk2_neigung_heizkennlinie
+              name: Curve Slope (Neigung)
+              icon: mdi:chart-bell-curve
+              icon_color: orange
+              fill_container: false
+              layout: vertical
+              display_mode: buttons
+              tap_action:
+                action: more-info
+              card_mod:
+                style: |
+                  ha-card {
+                    position: relative;
+                    overflow: visible !important;
+                  }
+                  ha-card:hover::after {
+                    content: "Sets how steeply the flow temperature rises as outdoor temperature decreases. Higher values mean the heating responds more aggressively to cold weather.";
+                    position: absolute;
+                    bottom: 100%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    margin-bottom: 8px;
+                    background: var(--card-background-color);
+                    border: 1px solid var(--divider-color);
+                    padding: 8px;
+                    border-radius: 8px;
+                    white-space: normal;
+                    max-width: 250px;
+                    width: max-content;
+                    word-break: break-word;
+                    overflow-wrap: break-word;
+                    z-index: 99999999;
+                    box-shadow: 0px 2px 8px rgba(0,0,0,0.2);
+                  }
+            - type: custom:mushroom-number-card
+              entity: select.mqtt_hk2_niveau_heizkennlinie
+              name: Curve Level (Niveau)
+              icon: mdi:thermometer-chevron-up
+              icon_color: red
+              fill_container: false
+              layout: vertical
+              display_mode: buttons
+              tap_action:
+                action: more-info
+              card_mod:
+                style: |
+                  ha-card {
+                    position: relative;
+                    overflow: visible !important;
+                  }
+                  ha-card:hover::after {
+                    content: "Adjusts the entire heating curve up or down. Increase to raise flow temperature at every outdoor temperature point.";
+                    position: absolute;
+                    bottom: 100%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    margin-bottom: 8px;
+                    background: var(--card-background-color);
+                    border: 1px solid var(--divider-color);
+                    padding: 8px;
+                    border-radius: 8px;
+                    white-space: normal;
+                    max-width: 250px;
+                    width: max-content;
+                    word-break: break-word;
+                    overflow-wrap: break-word;
+                    z-index: 99999999;
+                    box-shadow: 0px 2px 8px rgba(0,0,0,0.2);
+                  }
+  - type: custom:layout-card
+    layout_type: grid
+    layout:
+      grid-template-columns: repeat(2, minmax(120px, 1fr))
+      grid-gap: 0px
+    cards:
+      - type: custom:mushroom-entity-card
+        entity: sensor.mqtt_aussentemperatur
+        name: Current Outdoor Temp
+        icon: mdi:thermometer
+      - type: custom:mushroom-entity-card
+        entity: sensor.hk2_radiatoren_hk2_voralauftemperatur
+        name: Actual Flow Temp
+        icon: mdi:thermometer-water
+  - type: custom:layout-card
+    layout_type: grid
+    layout:
+      grid-template-columns: 1
+      grid-gap: 0px
+    cards:
+      - type: custom:plotly-graph
+        hours_to_show: 1
+        refresh_interval: 5
+        entities:
+          - entity: ""
+            name: Heating Curve
+            mode: lines
+            line:
+              color: rgb(255, 140, 0)
+              width: 3
+              shape: spline
+              smoothing: 0.5
+            hovertemplate: "Outdoor: %{x}°C<br>Flow: %{y:.1f}°C<extra></extra>"
+            x:
+              - 20
+              - 10
+              - 0
+              - -10
+              - -20
+              - -30
+            "y": |-
+              $fn ({hass}) => {
+                const slopeStr = hass.states['select.mqtt_hk2_neigung_heizkennlinie'].state;
+                const slope = parseFloat(slopeStr) || 1.0;
+                const niveauStr = hass.states['select.mqtt_hk2_niveau_heizkennlinie'].state;
+                const niveau = parseInt(niveauStr) || 0;
+
+                const heatingCurveData = {
+                  0.2: {'-30': 24, '-20': 22, '-10': 20, '0': 18, '10': 16, '20': 13},
+                  0.3: {'-30': 28, '-20': 25, '-10': 22, '0': 20, '10': 17, '20': 12},
+                  0.4: {'-30': 33, '-20': 29, '-10': 25, '0': 22, '10': 17, '20': 11},
+                  0.5: {'-30': 36, '-20': 32, '-10': 28, '0': 23, '10': 18, '20': 11},
+                  0.6: {'-30': 42, '-20': 36, '-10': 30, '0': 25, '10': 19, '20': 10},
+                  0.7: {'-30': 45, '-20': 39, '-10': 33, '0': 27, '10': 19, '20': 9},
+                  0.8: {'-30': 50, '-20': 43, '-10': 36, '0': 29, '10': 20, '20': 8},
+                  0.9: {'-30': 54, '-20': 46, '-10': 38, '0': 30, '10': 21, '20': 8},
+                  1.0: {'-30': 59, '-20': 50, '-10': 41, '0': 32, '10': 21, '20': 7},
+                  1.1: {'-30': 62, '-20': 53, '-10': 44, '0': 34, '10': 22, '20': 6},
+                  1.2: {'-30': 68, '-20': 57, '-10': 46, '0': 36, '10': 23, '20': 5},
+                  1.3: {'-30': 71, '-20': 60, '-10': 49, '0': 37, '10': 23, '20': 4},
+                  1.4: {'-30': 76, '-20': 64, '-10': 52, '0': 39, '10': 24, '20': 4},
+                  1.5: {'-30': 80, '-20': 67, '-10': 54, '0': 41, '10': 25, '20': 3},
+                  1.6: {'-30': 85, '-20': 71, '-10': 57, '0': 43, '10': 25, '20': 2},
+                  1.7: {'-30': 88, '-20': 74, '-10': 60, '0': 44, '10': 26, '20': 1},
+                  1.8: {'-30': 94, '-20': 78, '-10': 62, '0': 46, '10': 27, '20': 1},
+                  1.9: {'-30': 97, '-20': 81, '-10': 65, '0': 48, '10': 27, '20': 0},
+                  2.0: {'-30': 100, '-20': 85, '-10': 68, '0': 50, '10': 28, '20': 0},
+                  2.1: {'-30': 100, '-20': 88, '-10': 70, '0': 52, '10': 29, '20': 0},
+                  2.2: {'-30': 100, '-20': 92, '-10': 73, '0': 53, '10': 29, '20': 0},
+                  2.3: {'-30': 100, '-20': 95, '-10': 76, '0': 55, '10': 30, '20': 0},
+                  2.4: {'-30': 100, '-20': 99, '-10': 78, '0': 57, '10': 31, '20': 0},
+                  2.5: {'-30': 100, '-20': 100, '-10': 81, '0': 59, '10': 31, '20': 0},
+                  2.6: {'-30': 100, '-20': 100, '-10': 84, '0': 60, '10': 32, '20': 0},
+                  2.7: {'-30': 100, '-20': 100, '-10': 86, '0': 62, '10': 33, '20': 0},
+                  2.8: {'-30': 100, '-20': 100, '-10': 89, '0': 64, '10': 33, '20': 0},
+                  2.9: {'-30': 100, '-20': 100, '-10': 92, '0': 66, '10': 34, '20': 0},
+                  3.0: {'-30': 100, '-20': 100, '-10': 94, '0': 67, '10': 35, '20': 0},
+                  3.1: {'-30': 100, '-20': 100, '-10': 97, '0': 69, '10': 35, '20': 0},
+                  3.2: {'-30': 100, '-20': 100, '-10': 100, '0': 71, '10': 36, '20': 0},
+                  3.3: {'-30': 100, '-20': 100, '-10': 100, '0': 73, '10': 37, '20': 0},
+                  3.4: {'-30': 100, '-20': 100, '-10': 100, '0': 74, '10': 37, '20': 0},
+                  3.5: {'-30': 100, '-20': 100, '-10': 100, '0': 76, '10': 38, '20': 0},
+                };
+
+                function interpolateFlowTemp(slopeVal, outdoorTemp) {
+                  const knownSlopes = Object.keys(heatingCurveData).map(parseFloat).sort((a,b) => a-b);
+                  const outdoorKey = String(outdoorTemp);
+                  let lowerSlope = knownSlopes[0];
+                  let upperSlope = knownSlopes[knownSlopes.length - 1];
+                  for (let i = 0; i < knownSlopes.length; i++) {
+                    if (knownSlopes[i] <= slopeVal) lowerSlope = knownSlopes[i];
+                    if (knownSlopes[i] >= slopeVal) {
+                      upperSlope = knownSlopes[i];
+                      break;
+                    }
+                  }
+                  const lowerTemp = heatingCurveData[lowerSlope][outdoorKey];
+                  const upperTemp = heatingCurveData[upperSlope][outdoorKey];
+                  if (lowerSlope === upperSlope) return lowerTemp;
+                  const ratio = (slopeVal - lowerSlope) / (upperSlope - lowerSlope);
+                  return lowerTemp + ratio * (upperTemp - lowerTemp);
+                }
+
+                const outdoorTemps = [20, 10, 0, -10, -20, -30];
+                return outdoorTemps.map(outdoor => {
+                  let flowTemp = interpolateFlowTemp(slope, outdoor);
+                  flowTemp += niveau;
+                  return Math.max(0, Math.min(100, flowTemp));
+                });
+              }
+          - entity: sensor.hk2_radiatoren_hk2_voralauftemperatur
+            name: Current Point
+            mode: markers
+            marker:
+              size: 12
+              color: rgb(255, 255, 255)
+              line:
+                color: rgb(74, 144, 226)
+                width: 2
+            hovertemplate: >-
+              <b>Current Position</b><br>Outdoor: %{x:.1f}°C<br>Flow:
+              %{y:.1f}°C<extra></extra>
+            x: $ex [hass.states['sensor.mqtt_aussentemperatur'].state]
+            "y": >-
+              $ex
+              [hass.states['sensor.hk2_radiatoren_hk2_voralauftemperatur'].state]
+        layout:
+          xaxis:
+            title:
+              text: Outdoor Temp. °C
+              font:
+                size: 14
+              standoff: 10
+            range:
+              - 20
+              - -30
+            autorange: false
+            fixedrange: true
+            dtick: 10
+            gridcolor: rgb(80, 80, 80)
+            showgrid: true
+            zeroline: false
+          yaxis:
+            title:
+              text: Heating Flow Temp. °C
+              font:
+                size: 14
+              standoff: 5
+            range:
+              - 0
+              - 102
+            autorange: false
+            fixedrange: true
+            dtick: 10
+            gridcolor: rgb(80, 80, 80)
+            showgrid: true
+            zeroline: false
+          annotations: |-
+            $fn ({hass}) => {
+              const slopeStr = hass.states['select.mqtt_hk2_neigung_heizkennlinie'].state;
+              const slope = parseFloat(slopeStr) || 1.0;
+              const niveauStr = hass.states['select.mqtt_hk2_niveau_heizkennlinie'].state;
+              const niveau = parseInt(niveauStr) || 0;
+
+              const heatingCurveData = {
+                0.2: {'-30': 24, '-20': 22, '-10': 20, '0': 18, '10': 16, '20': 13},
+                0.3: {'-30': 28, '-20': 25, '-10': 22, '0': 20, '10': 17, '20': 12},
+                0.4: {'-30': 33, '-20': 29, '-10': 25, '0': 22, '10': 17, '20': 11},
+                0.5: {'-30': 36, '-20': 32, '-10': 28, '0': 23, '10': 18, '20': 11},
+                0.6: {'-30': 42, '-20': 36, '-10': 30, '0': 25, '10': 19, '20': 10},
+                0.7: {'-30': 45, '-20': 39, '-10': 33, '0': 27, '10': 19, '20': 9},
+                0.8: {'-30': 50, '-20': 43, '-10': 36, '0': 29, '10': 20, '20': 8},
+                0.9: {'-30': 54, '-20': 46, '-10': 38, '0': 30, '10': 21, '20': 8},
+                1.0: {'-30': 59, '-20': 50, '-10': 41, '0': 32, '10': 21, '20': 7},
+                1.1: {'-30': 62, '-20': 53, '-10': 44, '0': 34, '10': 22, '20': 6},
+                1.2: {'-30': 68, '-20': 57, '-10': 46, '0': 36, '10': 23, '20': 5},
+                1.3: {'-30': 71, '-20': 60, '-10': 49, '0': 37, '10': 23, '20': 4},
+                1.4: {'-30': 76, '-20': 64, '-10': 52, '0': 39, '10': 24, '20': 4},
+                1.5: {'-30': 80, '-20': 67, '-10': 54, '0': 41, '10': 25, '20': 3},
+                1.6: {'-30': 85, '-20': 71, '-10': 57, '0': 43, '10': 25, '20': 2},
+                1.7: {'-30': 88, '-20': 74, '-10': 60, '0': 44, '10': 26, '20': 1},
+                1.8: {'-30': 94, '-20': 78, '-10': 62, '0': 46, '10': 27, '20': 1},
+                1.9: {'-30': 97, '-20': 81, '-10': 65, '0': 48, '10': 27, '20': 0},
+                2.0: {'-30': 100, '-20': 85, '-10': 68, '0': 50, '10': 28, '20': 0},
+                2.1: {'-30': 100, '-20': 88, '-10': 70, '0': 52, '10': 29, '20': 0},
+                2.2: {'-30': 100, '-20': 92, '-10': 73, '0': 53, '10': 29, '20': 0},
+                2.3: {'-30': 100, '-20': 95, '-10': 76, '0': 55, '10': 30, '20': 0},
+                2.4: {'-30': 100, '-20': 99, '-10': 78, '0': 57, '10': 31, '20': 0},
+                2.5: {'-30': 100, '-20': 100, '-10': 81, '0': 59, '10': 31, '20': 0},
+                2.6: {'-30': 100, '-20': 100, '-10': 84, '0': 60, '10': 32, '20': 0},
+                2.7: {'-30': 100, '-20': 100, '-10': 86, '0': 62, '10': 33, '20': 0},
+                2.8: {'-30': 100, '-20': 100, '-10': 89, '0': 64, '10': 33, '20': 0},
+                2.9: {'-30': 100, '-20': 100, '-10': 92, '0': 66, '10': 34, '20': 0},
+                3.0: {'-30': 100, '-20': 100, '-10': 94, '0': 67, '10': 35, '20': 0},
+                3.1: {'-30': 100, '-20': 100, '-10': 97, '0': 69, '10': 35, '20': 0},
+                3.2: {'-30': 100, '-20': 100, '-10': 100, '0': 71, '10': 36, '20': 0},
+                3.3: {'-30': 100, '-20': 100, '-10': 100, '0': 73, '10': 37, '20': 0},
+                3.4: {'-30': 100, '-20': 100, '-10': 100, '0': 74, '10': 37, '20': 0},
+                3.5: {'-30': 100, '-20': 100, '-10': 100, '0': 76, '10': 38, '20': 0},
+              };
+
+              function interpolateFlowTemp(slopeVal, outdoorTemp) {
+                const knownSlopes = Object.keys(heatingCurveData).map(parseFloat).sort((a,b) => a-b);
+                const outdoorKey = String(outdoorTemp);
+                let lowerSlope = knownSlopes[0];
+                let upperSlope = knownSlopes[knownSlopes.length - 1];
+                for (let i = 0; i < knownSlopes.length; i++) {
+                  if (knownSlopes[i] <= slopeVal) lowerSlope = knownSlopes[i];
+                  if (knownSlopes[i] >= slopeVal) {
+                    upperSlope = knownSlopes[i];
+                    break;
+                  }
+                }
+                const lowerTemp = heatingCurveData[lowerSlope][outdoorKey];
+                const upperTemp = heatingCurveData[upperSlope][outdoorKey];
+                if (lowerSlope === upperSlope) return lowerTemp;
+                const ratio = (slopeVal - lowerSlope) / (upperSlope - lowerSlope);
+                return lowerTemp + ratio * (upperTemp - lowerTemp);
+              }
+
+              // Detect screen width (approximation via window if available)
+              const screenWidth = (typeof window !== 'undefined') ? window.innerWidth : 1000;
+              const isWideScreen = screenWidth >= 768;
+
+              const outdoorTemps = [20, 10, 0, -10, -20, -30];
+              const annotations = [];
+
+              // Add annotation for current point with fixed position
+              const currentOutdoorStr = hass.states['sensor.mqtt_aussentemperatur'].state;
+              const currentFlowStr = hass.states['sensor.hk2_radiatoren_hk2_voralauftemperatur'].state;
+              const currentOutdoor = parseFloat(currentOutdoorStr);
+              const currentFlow = parseFloat(currentFlowStr);
+
+              if (!isNaN(currentOutdoor) && !isNaN(currentFlow)) {
+                const annotationText = '<b>Current:</b>&nbsp;&nbsp;&nbsp;<br><b>Flow:</b> ' + currentFlow.toFixed(1) + '°C&nbsp;&nbsp;&nbsp;<br><b>Outdoor:</b> ' + currentOutdoor.toFixed(1) + '°C&nbsp;&nbsp;';
+
+                // Conditional positioning: top-right if niveau <= -10 AND slope <= 0.5
+                let yPosition, yAnchor;
+                if (niveau <= -10 && slope <= 0.5) {
+                  yPosition = 101;  // Top of chart
+                  yAnchor = 'top';
+                } else {
+                  yPosition = 1;    // Bottom of chart
+                  yAnchor = 'bottom';
+                }
+
+                annotations.push({
+                  x: currentOutdoor,
+                  y: currentFlow,
+                  xref: 'x',
+                  yref: 'y',
+                  // Text box position fixed at right edge
+                  xanchor: 'right',
+                  yanchor: yAnchor,
+                  // Arrow tail position in absolute data coordinates
+                  ax: -29.5,  // x position in data coordinates (right edge)
+                  ay: yPosition,   // y position in data coordinates (dynamic)
+                  axref: 'x',
+                  ayref: 'y',
+                  text: annotationText,
+                  showarrow: true,
+                  arrowhead: 2,
+                  arrowsize: 1,
+                  arrowwidth: 2,
+                  arrowcolor: 'rgb(74, 144, 226)',
+                  align: 'left',
+                  bgcolor: 'rgba(40, 40, 40, 0.9)',
+                  bordercolor: 'rgb(74, 144, 226)',
+                  borderwidth: 2,
+                  borderpad: 4,
+                  font: {
+                    size: 12,
+                    color: 'rgb(200, 200, 200)',
+                    family: 'Arial'
+                  }
+                });
+              }
+
+
+              // Add annotations for heating curve points
+              outdoorTemps.forEach((outdoor, index) => {
+                let flowTemp = interpolateFlowTemp(slope, outdoor);
+                flowTemp += niveau;
+                flowTemp = Math.max(0, Math.min(100, flowTemp));
+
+                // Only show all annotations on wide screens, otherwise show fewer
+                if (isWideScreen || index % 2 === 0) {
+                  // Adjust positioning for edge annotations to avoid overlap
+                  let xanchor = 'center';
+                  let ax = 0;
+
+                  if (outdoor === 20) {
+                    // Left edge - shift annotation to the right
+                    xanchor = 'left';
+                    ax = 10;
+                  } else if (outdoor === -30) {
+                    // Right edge - shift annotation to the left
+                    xanchor = 'right';
+                    ax = -10;
+                  }
+
+                  // Dynamic vertical positioning: if temp > 85, place annotation below
+                  let ay = -40;
+                  let yanchor = 'bottom';
+                  if (flowTemp > 85) {
+                    ay = 40;  // Place below the point
+                    yanchor = 'top';
+                  }
+
+                  annotations.push({
+                    x: outdoor,
+                    y: flowTemp,
+                    xref: 'x',
+                    yref: 'y',
+                    text: flowTemp.toFixed(1) + '°C',
+                    showarrow: true,
+                    arrowhead: 2,
+                    arrowsize: 1,
+                    arrowwidth: 2,
+                    arrowcolor: 'rgb(200, 200, 200)',
+                    xanchor: xanchor,
+                    yanchor: yanchor,
+                    ax: ax,
+                    ay: ay,
+                    bgcolor: 'rgba(40, 40, 40, 0.9)',
+                    bordercolor: 'rgb(100, 100, 100)',
+                    borderwidth: 1,
+                    borderpad: 4,
+                    font: {
+                      size: 12,
+                      color: 'rgb(200, 200, 200)',
+                      family: 'Arial'
+                    }
+                  });
+                }
+              });
+
+              return annotations;
+            }
+          height: 450
+          showlegend: true
+          legend:
+            orientation: h
+            yanchor: top
+            "y": 1.1
+            xanchor: center
+            x: 0.5
+          paper_bgcolor: rgba(0,0,0,0)
+          plot_bgcolor: rgb(30, 30, 30)
+          font:
+            color: rgb(200, 200, 200)
+            size: 12
+          margin:
+            l: 55
+            r: 20
+            t: 0
+            b: 55
+          hovermode: closest
+          hoverdistance: 20
+          hoverlabel:
+            bgcolor: rgb(40, 40, 40)
+            bordercolor: rgb(100, 100, 100)
+            font:
+              size: 13
+              color: rgb(220, 220, 220)
+              family: Arial
+          dragmode: false
+        config:
+          scrollZoom: false
+          displayModeBar: false
+          doubleClick: false
+          showTips: false
+          staticPlot: false
+          editable: false
+          modeBarButtonsToRemove:
+            - zoom2d
+            - pan2d
+            - select2d
+            - lasso2d
+            - zoomIn2d
+            - zoomOut2d
+            - autoScale2d
+            - resetScale2d
+        raw_plotly_config: true
+card_mod:
+  style: |
+    ha-card {
+      overflow: visible !important;
+    }
+grid_options:
+  columns: full
