@@ -5,7 +5,7 @@ _NOTE: These changes were made with the help of AI_
 A comprehensive Python testing tool for vcontrold daemon that discovers and tests heating system commands with live monitoring capabilities.
 
 <img src="vcontrold_tester_cli.png" alt="CLI" width="49.5%">
-<img src="vcontrold_tester_html.png" alt="HTML" width="49.5% max-height="1200px">
+<img src="vcontrold_tester_html.png" alt="HTML" width="49.5%" max-height="1200px">
 ### Features
 
 **Command Discovery**
