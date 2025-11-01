@@ -1,4 +1,4 @@
-# Vitodens 200-W B2HB-19 Model Designation
+# Vitodens 200-W B2HB-19
 
 
 ## Model Designation
