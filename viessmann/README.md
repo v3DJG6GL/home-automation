@@ -10,7 +10,7 @@
          (vs **K** = Kombi/Combi with integrated instant DHW)
 - **B**  = Burner variant (MatriX cylinder burner with Lambda Pro Control)
 
-### -19 Suffix:
+### 19 Suffix:
 - **19** = **Heating output capacity in kilowatts (kW)**
          = 19 kW thermal output
          = approximately 64 MBH (64,000 BTU/hour)
