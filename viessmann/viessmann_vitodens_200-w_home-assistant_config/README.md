@@ -1,5 +1,7 @@
 _NOTE: Description & configuration were made with the help of AI_
 
+
+### NOTE: I will post more configurations in the near future...
 # Home Assistant Heating Curve Card for Viessmann Vitodens 200-W
 
 This Lovelace card configuration provides an interactive visualization and control interface for Viessmann Vitodens 200-W heating curve parameters.
