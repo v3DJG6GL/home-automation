@@ -452,14 +452,14 @@
 			<addr>3308</addr>
 			<len>1</len>
 			<unit>T1U</unit>
-			<description>HK2: Warmwassersolltemperatur Partybetrieb</description>
+			<description>HK2: Raumsolltemperatur Partybetrieb</description>
 		</command>
 
 		<command name='setVitoTempPartySollHK2' protocmd='setaddr'>
 			<addr>3308</addr>
 			<len>1</len>
 			<unit>T1U</unit>
-			<description>HK2: Setze Warmwassersolltemperatur Partybetrieb</description>
+			<description>HK2: Setze Raumsolltemperatur Partybetrieb</description>
 		</command>
 
 		<command name='getVitoFerienBeginnHK2' protocmd='getaddr'>
@@ -630,14 +630,14 @@
 			<addr>4308</addr>
 			<len>1</len>
 			<unit>T1U</unit>
-			<description>HK3: Warmwassersolltemperatur Partybetrieb</description>
+			<description>HK3: Raumsolltemperatur Partybetrieb</description>
 		</command>
 
 		<command name='setVitoTempPartySollHK3' protocmd='setaddr'>
 			<addr>4308</addr>
 			<len>1</len>
 			<unit>T1U</unit>
-			<description>HK3: Setze Warmwassersolltemperatur Partybetrieb</description>
+			<description>HK3: Setze Raumsolltemperatur Partybetrieb</description>
 		</command>
 
 		<command name='getVitoFerienBeginnHK3' protocmd='getaddr'>
